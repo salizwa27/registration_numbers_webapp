@@ -22,12 +22,41 @@
         </div>
 
         <br>
+  
+    </form>
 
-        <a href="/reset">
-            <button class="resetBtn" on type="submit" name="button" value="reset">Reset
+    <form action="/reset" method="post">
+    
+     
+            <button class="resetBtn" type="submit" name="button" value="reset">Reset
             </button>
 
-            <div class="print_reg">
+    </form>
+
+     <form action="/reg_numbers_filter" method="POST">
+            <br>
+            
+             <div class="radioBtn">
+            <select name="filtered" id="">
+                <option value="all"> All_Towns</option>
+                <option value="1"> Cape_Town</option>
+                <option value="2"> Bellvile</option>
+                <option value="3"> Paarl</option>
+
+
+            </select>
+
+            <br/>
+
+     <div filterBtn>
+            <a href="/reg_numbers">
+                <button class="filterBtn" type="submit" name="button"> filter</button>
+            </a>
+        </div>
+
+        <hr>
+
+        <div class="print_reg">
                 <ul>
                     {{#each registrations}}
 
@@ -40,26 +69,6 @@
 
             </div>
 
-    </form>
-
-     <form action="/reg_numbers" method="GET">
-            <br>
-            
-             <div class="radioBtn">
-            <select name="filtered" id="">
-                <option value="all"> All_Towns</option>
-                <option value="CA"> Cape_Town</option>
-                <option value="CY"> Bellvile</option>
-                <option value="CJ"> Paarl</option>
-
-
-            </select>
-
-     <div filterBtn>
-            <a href="/reg_numbers">
-                <button class="filterBtn" type="submit" name="button"> filter</button>
-            </a>
-        </div>
 
 
         </div>

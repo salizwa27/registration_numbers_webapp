@@ -37,8 +37,8 @@ module.exports = function reg_number(pool) {
     }
 
     async function filter(id){
-        if (id === all) {
-            return getRegNum()
+        if (id === `all`) {
+            return await getRegNum()
         } else {
 
             const selected_town = await pool.query('select registrations from registration_numbers where town_id = $1', [id])
@@ -66,7 +66,8 @@ module.exports = function reg_number(pool) {
         insertRegNum,
         getRegNum,
         checkRegNum,
-        resetBtn
+        resetBtn,
+        filter
     }
 
 }

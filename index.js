@@ -40,17 +40,18 @@ app.post("/reg_numbers", async function (req, res) {
   })
 })
 
-app.get("/reg_numbers", async function (req, res){
+app.post("/reg_numbers_filter", async function (req, res){
 
-  var towns = req.body.filtered
-  var filter_reg = await registration_num.filter(towns)
+  var town = req.body.filtered
+  
+  var filter_reg = await registration_num.filter(town)
   res.render("reg_num", {
     registrations: filter_reg
   })
 })
 
-app.get("/reset", async function (req, res) {
-  reg_number.resetBtn();
+app.post("/reset", async function (req, res) {
+  await registration_num.resetBtn();
   res.redirect("/")
 })
 
