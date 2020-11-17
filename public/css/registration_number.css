@@ -36,6 +36,7 @@ h1{
     border: 12px chocolate;
     border-radius: 12px;
     padding: 3px;
+    font-size: 15px;
   }
   
   .addBtn:hover {
@@ -60,6 +61,34 @@ h1{
     float: left;
     margin: 0.5em;
     padding: 1em 2em;
+    color: black;
+  }
+
+  .filterBtn{
+    background-color: white; 
+    color: black; 
+    border: 12px chocolate;
+    border-radius: 12px;
+    padding: 3px;
+    font-size: 15px;
+  }
+
+  .filterBtn:hover {
+    background-color: chocolate;
+    color: black;
+  }
+
+  .resetBtn{
+    background-color: white; 
+    color: black; 
+    border: 12px chocolate;
+    border-radius: 12px;
+    padding: 3px;
+    font-size: 15px;
+  }
+
+  .resetBtn:hover {
+    background-color: chocolate;
     color: black;
   }
 

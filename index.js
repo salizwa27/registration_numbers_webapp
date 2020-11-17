@@ -31,12 +31,20 @@ app.get("/", async function (req, res) {
 
 app.post("/reg_numbers", async function (req, res) {
 
+  // var name = req.body.name
+  //   name = name.toUpperCase()
+  //   //let checkDuplicate = await registration.check(name)
+
   var textbox = req.body.registration_no;
 
   await registration_num.insertRegNum(textbox)
+
   var display = await registration_num.getRegNum(textbox)
+ // var checkDuplicate = await registration_num.check_duplicates(textbox)
+
   res.render("reg_num", {
-    registrations: display
+    registrations: display,
+   // registrations: checkDuplicate
   })
 })
 

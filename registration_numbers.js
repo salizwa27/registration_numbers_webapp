@@ -52,10 +52,15 @@ module.exports = function reg_number(pool) {
         return registration.rows;
     }
 
-    async function checkRegNum(town_id) {
-        const registration = await pool.query('select town_id from registration_numbers (registrations, town_id) where start_string $=1', [start_string(0, 2)])
-        return registration.rowCount;
-    }
+    // async function checkRegNum(town_id) {
+    //     const registration = await pool.query('select town_id from registration_numbers (registrations, town_id) where start_string $=1', [start_string(0, 2)])
+    //     return registration.rowCount;
+    // }
+
+    // async function check_duplicates(reg_entered) {
+    //     let duplicates = await pool.query('select registrations from registration_numbers where registrations=$1', [reg_entered])
+    //     return duplicates.rowCount;
+    // }
 
     async function resetBtn() {
         await pool.query('delete from registration_numbers')
@@ -65,9 +70,9 @@ module.exports = function reg_number(pool) {
     return {
         insertRegNum,
         getRegNum,
-        checkRegNum,
         resetBtn,
         filter
+       // check_duplicates
     }
 
 }
