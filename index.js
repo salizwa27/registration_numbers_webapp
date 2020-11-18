@@ -1,7 +1,9 @@
 let express = require('express');
 const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser');
-const registration_numbers = require('./registration_numbers')
+const registration_numbers = require('./registration_numbers');
+const flash = require('express-flash');
+const session = require('express-session');
 
 const pg = require("pg");
 const Pool = pg.Pool;
@@ -22,6 +24,15 @@ app.set('view engine', 'handlebars');
 
 app.use(express.static('public'));
 
+app.use(session({
+  secret : "<add a secret string here>",
+  resave: false,
+  saveUninitialized: true
+}));
+
+// initialise the flash middleware
+app.use(flash());
+
 var registration_num = registration_numbers(pool)
 
 app.get("/", async function (req, res) {
@@ -31,22 +42,46 @@ app.get("/", async function (req, res) {
 
 app.post("/reg_numbers", async function (req, res) {
 
-  // var name = req.body.name
-  //   name = name.toUpperCase()
-  //   //let checkDuplicate = await registration.check(name)
+  var regNum = req.body.registration_no 
+   let checkDuplicate = await registration_num.check_duplicates(regNum)
 
-  var textbox = req.body.registration_no;
+  if (regNum.length < 10){
 
-  await registration_num.insertRegNum(textbox)
+    await registration_num.insertRegNum(regNum)
+    var duplicates = await registration_num.getRegNum()
+   if (checkDuplicate !== 0) {
+     req.flash('success', 'This registration is already entered!')
+     duplicates;
 
-  var display = await registration_num.getRegNum(textbox)
- // var checkDuplicate = await registration_num.check_duplicates(textbox)
+   }
+  //  else {
+  //    return false
+  //  } 
+   
+ 
+   var textbox = req.body.registration_no;
+   //await registration_num.insertRegNum(textbox)
+   var display = await registration_num.getRegNum(textbox)
 
-  res.render("reg_num", {
-    registrations: display,
-   // registrations: checkDuplicate
-  })
+  //  if (!textbox){
+  //   req.flash('success', "Enter Your Registration Number")
+  //   duplicates;
+  // }
+ 
+  
+ }else {
+  req.flash('success', 'This registration is too long!')
+  duplicates;
+ }
+
+ res.render("reg_num", {
+  registrations: display,
+  registrations: duplicates
 })
+
+})
+
+  
 
 app.post("/reg_numbers_filter", async function (req, res){
 

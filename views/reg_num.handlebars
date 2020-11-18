@@ -7,7 +7,13 @@
     </div>
 
 
-    <form action="/reg_numbers" method="post">
+    <form action="/reg_numbers" method="POST">
+
+    {{#if messages.success}}
+    <div class="entry">
+        <h1> {{messages.success}}</h1>
+    </div>
+    {{/if}}
 
         <div class="textbox">
             <input type="text" placeholder="enter reg_num" name="registration_no">
@@ -31,8 +37,8 @@
             
              <div class="dropDownBtn">
             <select name="filtered" id="">
-                <option value="all"> All_Towns</option>
-                <option value="1"> Cape_Town</option>
+                <option value="all"> All Towns</option>
+                <option value="1"> Cape Town</option>
                 <option value="2"> Bellvile</option>
                 <option value="3"> Paarl</option>
 

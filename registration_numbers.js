@@ -9,7 +9,7 @@ module.exports = function reg_number(pool) {
     async function insertRegNum(reg_entered) {
 
         var code = reg_entered.substring(0, 2)
-        console.log(code)
+       // console.log(code)
 
         const id = await pool.query(`select id from town where starting_string = $1`, [code])
         const reg_id = id.rows[0].id
@@ -18,15 +18,17 @@ module.exports = function reg_number(pool) {
         let reg_num
         if (reg_id > 0) {
             reg_num = await pool.query('select * from registration_numbers where registrations = $1', [reg_entered])
-            const insertRegNumber = await pool.query('insert into registration_numbers (registrations, town_id) values ($1,$2)', [reg_entered, reg_id])
-
+            // const insertRegNumber = await pool.query('insert into registration_numbers (registrations, town_id) values ($1,$2)', [reg_entered, reg_id])
+            if (reg_num.rowCount === 0) {
+                const insertRegNumber = await pool.query('insert into registration_numbers (registrations, town_id) values ($1,$2)', [reg_entered, reg_id])
+                //return insertRegNumber.rows
+                return true
+            }
+            return false;
 // console.log(reg_num);
-        } else if (reg_num.rowCount === 0) {
-            const insertRegNumber = await pool.query('insert into registration_numbers (registrations, town_id) values ($1,$2)', [reg_entered, reg_id])
-            //return insertRegNumber.rows
-        } else {
-            return false
-        }
+        } //else {
+        //     return false
+        // }
 
 
         // const send_id = await pool.query('select reg')
@@ -57,10 +59,10 @@ module.exports = function reg_number(pool) {
     //     return registration.rowCount;
     // }
 
-    // async function check_duplicates(reg_entered) {
-    //     let duplicates = await pool.query('select registrations from registration_numbers where registrations=$1', [reg_entered])
-    //     return duplicates.rowCount;
-    // }
+    async function check_duplicates(reg_entered) {
+        let duplicates = await pool.query('select registrations from registration_numbers where registrations = $1', [reg_entered])
+        return duplicates.rowCount;
+    }
 
     async function resetBtn() {
         await pool.query('delete from registration_numbers')
@@ -71,8 +73,8 @@ module.exports = function reg_number(pool) {
         insertRegNum,
         getRegNum,
         resetBtn,
-        filter
-       // check_duplicates
+        filter,
+        check_duplicates
     }
 
 }
