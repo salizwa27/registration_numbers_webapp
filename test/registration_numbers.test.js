@@ -23,13 +23,15 @@ describe('The registration_numbers function', function() {
 
     it('should return all registrations from database', async function() {
         
-        await Registrations_num.insertRegNum("CY 789 546");
-        await Registrations_num.insertRegNum("CA 123 456");
-        await Registrations_num.insertRegNum("CJ 789 258")
+        await Registrations_num.insertRegNum("CY 123456");
+        await Registrations_num.insertRegNum("CA 741852");
+        await Registrations_num.insertRegNum("CJ 852963");
+        await Registrations_num.insertRegNum("CJ 666999")
 
-        assert.deepStrictEqual(await Registrations_num.getRegNum(), [{ registrations: "CY 789 546" },
-            { registrations: "CA 123 456" },
-            { registrations: "CJ 789 258" },
+        assert.deepStrictEqual(await Registrations_num.getRegNum(), [{ registrations: "CY 123456" },
+            { registrations: "CA 741852" },
+            { registrations: "CJ 852963" },
+            { registrations: "CJ 666999" },
 
         ]);
 
@@ -37,13 +39,13 @@ describe('The registration_numbers function', function() {
 
     it('should filter and return Bellville registrations only', async function() {
 
-        await Registrations_num.insertRegNum("CY 123 666");
-        await Registrations_num.insertRegNum("CY 789 546");
-        await Registrations_num.insertRegNum("CA 123 456");
-        await Registrations_num.insertRegNum("CJ 789 258")
+        await Registrations_num.insertRegNum("CY 852963");
+        await Registrations_num.insertRegNum("CY 147852");
+        await Registrations_num.insertRegNum("CA 369852");
+        await Registrations_num.insertRegNum("CJ 987654")
 
-        assert.deepStrictEqual(await Registrations_num.filter(2), [{ registrations: "CY 123 666" },
-            { registrations: "CY 789 546" }
+        assert.deepStrictEqual(await Registrations_num.filter(2), [{ registrations: "CY 852963" },
+            { registrations: "CY 147852" }
         ])
     });
 
@@ -60,14 +62,24 @@ describe('The registration_numbers function', function() {
 
     it('should filter and return Paarl registrations only', async function() {
 
-        await Registrations_num.insertRegNum("CY 123 666");
-        await Registrations_num.insertRegNum("CJ 789 546");
-        await Registrations_num.insertRegNum("CA 123 456");
-        await Registrations_num.insertRegNum("CJ 789 258")
+        await Registrations_num.insertRegNum("CY 285963");
+        await Registrations_num.insertRegNum("CJ 456123");
+        await Registrations_num.insertRegNum("CA 123456");
+        await Registrations_num.insertRegNum("CA 895425")
 
-        assert.deepStrictEqual(await Registrations_num.filter(1), [{ registrations: "CA 789 258" }, 
-        { registrations: "CJ 789 546" }
+        assert.deepStrictEqual(await Registrations_num.filter(3), [{ registrations: "CJ 456123" }, 
+        // { registrations: "CJ 895425" }
         ])
+    });
+
+    it('should not add duplicate for Bellville', async function() {
+       
+        await Registrations_num.insertRegNum("CA 895425")
+
+
+        assert.equal(1, await Registrations_num.check_duplicates("CA 895425"));
+
+
     });
 
 })
