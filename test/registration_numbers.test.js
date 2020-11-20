@@ -35,4 +35,39 @@ describe('The registration_numbers function', function() {
 
     });
 
+    it('should filter and return Bellville registrations only', async function() {
+
+        await Registrations_num.insertRegNum("CY 123 666");
+        await Registrations_num.insertRegNum("CY 789 546");
+        await Registrations_num.insertRegNum("CA 123 456");
+        await Registrations_num.insertRegNum("CJ 789 258")
+
+        assert.deepStrictEqual(await Registrations_num.filter(2), [{ registrations: "CY 123 666" },
+            { registrations: "CY 789 546" }
+        ])
+    });
+
+    it('should filter and return Cape Town registrations only', async function() {
+
+        await Registrations_num.insertRegNum("CY 123 666");
+        await Registrations_num.insertRegNum("CY 789 546");
+        await Registrations_num.insertRegNum("CA 123 456");
+        await Registrations_num.insertRegNum("CJ 789 258")
+
+        assert.deepStrictEqual(await Registrations_num.filter(1), [{ registrations: "CA 123 456" },
+        ])
+    });
+
+    it('should filter and return Paarl registrations only', async function() {
+
+        await Registrations_num.insertRegNum("CY 123 666");
+        await Registrations_num.insertRegNum("CJ 789 546");
+        await Registrations_num.insertRegNum("CA 123 456");
+        await Registrations_num.insertRegNum("CJ 789 258")
+
+        assert.deepStrictEqual(await Registrations_num.filter(1), [{ registrations: "CA 789 258" }, 
+        { registrations: "CJ 789 546" }
+        ])
+    });
+
 })

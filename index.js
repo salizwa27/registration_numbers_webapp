@@ -43,40 +43,46 @@ app.get("/", async function (req, res) {
 app.post("/reg_numbers", async function (req, res) {
 
   var regNum = req.body.registration_no 
-   let checkDuplicate = await registration_num.check_duplicates(regNum)
 
-  if (regNum.length < 10){
-
-    await registration_num.insertRegNum(regNum)
-    var duplicates = await registration_num.getRegNum()
-   if (checkDuplicate !== 0) {
-     req.flash('success', 'This registration is already entered!')
-     duplicates;
-
-   }
-  //  else {
-  //    return false
-  //  } 
-   
- 
-   var textbox = req.body.registration_no;
-   //await registration_num.insertRegNum(textbox)
-   var display = await registration_num.getRegNum(textbox)
-
-  //  if (!textbox){
-  //   req.flash('success', "Enter Your Registration Number")
-  //   duplicates;
-  // }
- 
+  var checkDuplicate = await registration_num.check_duplicates(regNum)
   
- }else {
-  req.flash('success', 'This registration is too long!')
-  duplicates;
- }
+  
+  if (regNum === ""){
+    req.flash('error', "Enter Your Registration Number");
+    // duplicates;
+  } 
+  else if (regNum.length > 10){
+    req.flash('error', 'This registration is too long!')
+  }
+  else if (checkDuplicate !== 0) {
+    req.flash('error', 'This registration is already entered!')
+    //  duplicates;
+  } 
+  else if (regNum){
+    await registration_num.insertRegNum(regNum)
+   
+    
+    var display = await registration_num.getRegNum(regNum)
+    req.flash('success', 'You have successfully added a registration number')
+  } 
+
+ //    else if (regNum.startsWith('CY ') || regNum.startsWith('CA ') || regNum.startsWith('CL ')) {
+//     await registration_num.insertRegNum(regNum);
+//     //reg;
+
+// }
+//    else if (!regNum.startsWith('CY ') || !regNum.startsWith('CA ') || !regNum.startsWith('CJ ')) {
+//     req.flash('error', 'Enter a Registration as required: CA 123456/CA 123-456')
+//    // reg;
+// }
+ 
+   
+  
+ 
 
  res.render("reg_num", {
-  registrations: display,
-  registrations: duplicates
+  registrations: display
+  // registrations: duplicates
 })
 
 })
@@ -94,7 +100,14 @@ app.post("/reg_numbers_filter", async function (req, res){
 })
 
 app.post("/reset", async function (req, res) {
+ 
+
   await registration_num.resetBtn();
+    req.flash('success', "counter has been reseted")
+
+  
+
+  
   res.redirect("/")
 })
 

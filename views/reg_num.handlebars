@@ -9,9 +9,15 @@
 
     <form action="/reg_numbers" method="POST">
 
+    {{#if messages.error}}
+    <div class="error">
+        <p> {{messages.error}}</p>
+    </div>
+    {{/if}}
+
     {{#if messages.success}}
-    <div class="entry">
-        <h1> {{messages.success}}</h1>
+    <div class="success">
+        <p> {{messages.success}}</p>
     </div>
     {{/if}}
 

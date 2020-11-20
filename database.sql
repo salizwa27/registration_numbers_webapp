@@ -13,4 +13,4 @@ create table registration_numbers (
 
 insert into town (town_names, starting_string) values('Cape town', 'CA');
 insert into town (town_names, starting_string) values('Bellville', 'CY');
-insert into town (town_names, starting_string) values('Paarl', 'CJ');
+insert into town (town_names, starting_string) values('Paarl', 'CJ');20.1

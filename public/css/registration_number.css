@@ -92,6 +92,14 @@ h1{
     color: black;
   }
 
+  .success{
+    color: chartreuse;
+  }
+
+  .error{
+    color: crimson;
+  }
+
   /* .print_reg{
     background-color: black;
   } */

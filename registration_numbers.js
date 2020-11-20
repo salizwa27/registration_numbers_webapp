@@ -16,6 +16,7 @@ module.exports = function reg_number(pool) {
 
        // console.log(reg_id);
         let reg_num
+        if(reg_entered.length <= 10){
         if (reg_id > 0) {
             reg_num = await pool.query('select * from registration_numbers where registrations = $1', [reg_entered])
             // const insertRegNumber = await pool.query('insert into registration_numbers (registrations, town_id) values ($1,$2)', [reg_entered, reg_id])
@@ -26,7 +27,8 @@ module.exports = function reg_number(pool) {
             }
             return false;
 // console.log(reg_num);
-        } //else {
+        } 
+        }//else {
         //     return false
         // }
 
