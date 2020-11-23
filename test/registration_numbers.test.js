@@ -74,6 +74,7 @@ describe('The registration_numbers function', function() {
 
     it('should not add duplicate for Bellville', async function() {
        
+        await Registrations_num.insertRegNum("CA 895425");
         await Registrations_num.insertRegNum("CA 895425")
 
 

@@ -2,7 +2,9 @@ module.exports = function reg_number(pool) {
 
     async function insertRegNum(reg_entered) {
 
-        var code = reg_entered.substring(0, 2)
+        var reg = reg_entered.toUpperCase()
+
+        var code = reg.substring(0, 2)
        
         const id = await pool.query(`select id from town where starting_string = $1`, [code])
         const reg_id = id.rows[0].id
@@ -10,10 +12,10 @@ module.exports = function reg_number(pool) {
         let reg_num
         if(reg_entered.length <= 10){
         if (reg_id > 0) {
-            reg_num = await pool.query('select * from registration_numbers where registrations = $1', [reg_entered])
+            reg_num = await pool.query('select * from registration_numbers where registrations = $1', [reg])
             
             if (reg_num.rowCount === 0) {
-                const insertRegNumber = await pool.query('insert into registration_numbers (registrations, town_id) values ($1,$2)', [reg_entered, reg_id])
+                const insertRegNumber = await pool.query('insert into registration_numbers (registrations, town_id) values ($1,$2)', [reg, reg_id])
                 
                 return true
             }

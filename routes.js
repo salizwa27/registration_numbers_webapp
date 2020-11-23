@@ -19,7 +19,7 @@ module.exports = function routes (registration_num) {
         var regNum = req.body.registration_no 
 
         var checkDuplicate = await registration_num.check_duplicates(regNum)
-        
+        let display
         
         if (regNum === ""){
           req.flash('error', "Enter Your Registration Number");
@@ -32,13 +32,24 @@ module.exports = function routes (registration_num) {
           req.flash('error', 'This registration is already entered!')
           
         } 
-        else if (regNum){
-          await registration_num.insertRegNum(regNum)
+
+    // else if (regNum){
+    //       await registration_num.insertRegNum(regNum)
          
           
-          var display = await registration_num.getRegNum(regNum)
-          req.flash('success', 'You have successfully added a registration number')
-        } 
+    //     } 
+
+    else if (regNum.startsWith('CY ') || regNum.startsWith('CA ') || regNum.startsWith('CJ ')) {
+        await registration_num.insertRegNum(regNum);
+        display = await registration_num.getRegNum(regNum)
+        req.flash('success', 'You have successfully added a registration number')
+        
+    } 
+            else if (!regNum.startsWith('CY ') || !regNum.startsWith('CA ') || !regNum.startsWith('CJ ')) {
+            req.flash('error', 'Enter a Registration as required: CA 852-741 OR CJ 741 369')
+            
+            }
+       
       
          res.render("reg_num", {
         registrations: display
