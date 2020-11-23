@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const registration_numbers = require('./registration_numbers');
 const flash = require('express-flash');
 const session = require('express-session');
+const routes = require('./routes')
 
 const pg = require("pg");
 const Pool = pg.Pool;
@@ -35,81 +36,15 @@ app.use(flash());
 
 var registration_num = registration_numbers(pool)
 
-app.get("/", async function (req, res) {
+var Routes = routes(registration_num)
 
-  res.render("reg_num");
-});
+app.get("/", Routes.homePage);
 
-app.post("/reg_numbers", async function (req, res) {
+app.post("/reg_numbers", Routes.reg_numbers)
 
-  var regNum = req.body.registration_no 
+app.post("/reg_numbers_filter", Routes.reg_numbers_filter)
 
-  var checkDuplicate = await registration_num.check_duplicates(regNum)
-  
-  
-  if (regNum === ""){
-    req.flash('error', "Enter Your Registration Number");
-    // duplicates;
-  } 
-  else if (regNum.length > 10){
-    req.flash('error', 'This registration is too long!')
-  }
-  else if (checkDuplicate !== 0) {
-    req.flash('error', 'This registration is already entered!')
-    //  duplicates;
-  } 
-  else if (regNum){
-    await registration_num.insertRegNum(regNum)
-   
-    
-    var display = await registration_num.getRegNum(regNum)
-    req.flash('success', 'You have successfully added a registration number')
-  } 
-
- //    else if (regNum.startsWith('CY ') || regNum.startsWith('CA ') || regNum.startsWith('CL ')) {
-//     await registration_num.insertRegNum(regNum);
-//     //reg;
-
-// }
-//    else if (!regNum.startsWith('CY ') || !regNum.startsWith('CA ') || !regNum.startsWith('CJ ')) {
-//     req.flash('error', 'Enter a Registration as required: CA 123456/CA 123-456')
-//    // reg;
-// }
- 
-   
-  
- 
-
- res.render("reg_num", {
-  registrations: display
-  // registrations: duplicates
-})
-
-})
-
-  
-
-app.post("/reg_numbers_filter", async function (req, res){
-
-  var town = req.body.filtered
-  
-  var filter_reg = await registration_num.filter(town)
-  res.render("reg_num", {
-    registrations: filter_reg
-  })
-})
-
-app.post("/reset", async function (req, res) {
- 
-
-  await registration_num.resetBtn();
-    req.flash('success', "counter has been reseted")
-
-  
-
-  
-  res.redirect("/")
-})
+app.post("/reset", Routes.reset)
 
 
 let PORT = process.env.PORT || 3008;
