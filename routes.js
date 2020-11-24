@@ -71,7 +71,7 @@ module.exports = function routes (registration_num) {
     async function reset (req, res){
 
         await registration_num.resetBtn();
-    req.flash('success', "counter has been reseted")
+    req.flash('success', "You have successfully cleared registration numbers")
 
   res.redirect("/")
 
